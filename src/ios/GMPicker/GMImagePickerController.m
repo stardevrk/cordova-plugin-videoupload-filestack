@@ -29,7 +29,7 @@
 
 @implementation GMImagePickerController
 
-- (id)init:(NSString* )api_key:(NSString* )app_secret
+- (id)init
 {
     if (self = [super init]) {
         
@@ -199,7 +199,7 @@
         
                  
             self.progressController = [[ProgressViewController alloc] init];
-             self.progressController.view.backgroundColor = [UIColor colorWithWhite:4 alpha:0.8f];
+             self.progressController.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8f];
             self.progressController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             [self presentViewController:self.progressController animated:YES completion:nil];
         
