@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-video-upload" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>VideoUpload</name>
+    <js-module name="VideoUpload" src="www/VideoUpload.js">
+        <clobbers target="window.VideoUpload" />
+    </js-module>
+    <platform name="ios">
+        <dependency id="cordova-plugin-cocoapod-support"/>
+        <dependency id="cordova-plugin-add-swift-support"/>
+
+        <pods-config ios-min-version="11.0" use-frameworks="true">
+            <source url="https://github.com/CocoaPods/Specs.git"/>
+        </pods-config>
+
+        <pod id="Filestack" spec="~> 2.1" />
+        <config-file target="config.xml" parent="/*">
+            <feature name="VideoUpload">
+                <param name="ios-package" value="VideoUpload"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/VideoUpload.h" />
+        <source-file src="src/ios/VideoUpload.m" />
+        <header-file src="src/ios/GMPicker/GMAlbumsViewCell.h" />
+        <source-file src="src/ios/GMPicker/GMAlbumsViewCell.m" />
+        <header-file src="src/ios/GMPicker/GMAlbumsViewController.h" />
+        <source-file src="src/ios/GMPicker/GMAlbumsViewController.m" />
+        <header-file src="src/ios/GMPicker/GMGridViewCell.h" />
+        <source-file src="src/ios/GMPicker/GMGridViewCell.m" />
+        <header-file src="src/ios/GMPicker/GMGridViewController.h" />
+        <source-file src="src/ios/GMPicker/GMGridViewController.m" />
+        <header-file src="src/ios/GMPicker/GMImagePickerController.h" />
+        <source-file src="src/ios/GMPicker/GMImagePickerController.m" />
+        <header-file src="src/ios/GMPicker/ProgressViewController.h" />
+        <source-file src="src/ios/GMPicker/ProgressViewController.m" />
+        <resource-file src="src/ios/GMPicker/GMEmptyFolder@1x.png" />
+        <resource-file src="src/ios/GMPicker/GMEmptyFolder@2x.png" />
+        <resource-file src="src/ios/GMPicker/GMSelected.png" />
+        <resource-file src="src/ios/GMPicker/GMSelected@2x.png" />
+        <resource-file src="src/ios/GMPicker/GMVideoIcon.png" />
+        <resource-file src="src/ios/GMPicker/GMVideoIcon@2x.png" />
+    </platform>
+</plugin>
