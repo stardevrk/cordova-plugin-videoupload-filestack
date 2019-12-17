@@ -185,7 +185,7 @@ static CGSize const kPopoverContentSize = {480, 720};
 - (void)selectAsset:(PHAsset *)asset;
 - (void)deselectAsset:(PHAsset *)asset;
 
-- (void)setupFilestack:(NSString *)key secret:(NSString *)secret;
+- (void)setupFilestack:(NSString *)key secret:(NSString *)secret region:(NSString *)region bucket:(NSString *)bucket folder:(NSString *)folder;
 
 /**
  *  User finish Actions

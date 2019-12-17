@@ -11,7 +11,10 @@
      }
     NSString *key = [command.arguments objectAtIndex:0];
     NSString *secret = [command.arguments objectAtIndex:1];
-    [_picker setupFilestack:key secret:secret];
+    NSString *region = [command.arguments objectAtIndex:2];
+    NSString *container = [command.arguments objectAtIndex:3];
+    NSString *path = [command.arguments objectAtIndex:4];
+    [_picker setupFilestack:key secret:secret region:region bucket:container folder:path];
     _picker.delegate = self;
     _picker.title = @"Albums";
     _picker.customDoneButtonTitle = @"Finished";

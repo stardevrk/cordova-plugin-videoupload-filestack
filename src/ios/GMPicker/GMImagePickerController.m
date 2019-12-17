@@ -113,7 +113,7 @@
     return self;
 }
 
-- (void) setupFilestack:(NSString *)key secret:(NSString *)secret
+- (void) setupFilestack:(NSString *)key secret:(NSString *)secret region:(NSString *)region bucket:(NSString *)bucket folder:(NSString *)folder
 {
     self.apiKey = [[NSString alloc] initWithString:key];
     self.appSecret = [[NSString alloc] initWithString:secret];
@@ -133,7 +133,14 @@
     }
     
     self.uploadOptions = FSUploadOptions.defaults;
-    self.uploadOptions.storeOptions.path = @"/location/";
+    if (folder.length > 0) {
+        self.uploadOptions.storeOptions.path = [[NSString alloc] initWithString:folder];
+    }
+    
+    if (bucket.length > 0 && region.length > 0) {
+        self.uploadOptions.storeOptions.container = [[NSString alloc] initWithString:bucket];
+        self.uploadOptions.storeOptions.region = [[NSString alloc] initWithString:region];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
