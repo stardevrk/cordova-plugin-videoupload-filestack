@@ -210,7 +210,9 @@
             [self presentViewController:self.progressController animated:YES completion:nil];
         
 //            [self.progressController setProgress:[[NSNumber alloc] initWithDouble:0.0]];
-        
+        NSString *fileName = [self.toBeUploaded lastPathComponent];
+        NSString *finalPath = [[NSString alloc] initWithFormat:@"%@%@", self.uploadOptions.storeOptions.path, fileName];
+        self.uploadOptions.storeOptions.path = [[NSString alloc] initWithString:finalPath];
         
         [self.client uploadURLUsing:self.toBeUploaded options:self.uploadOptions queue:dispatch_get_main_queue() uploadProgress:^(NSProgress * _Nonnull progress) {
                         NSLog(@"Progress: %@", progress);
