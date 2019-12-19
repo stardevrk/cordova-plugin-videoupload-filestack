@@ -202,16 +202,25 @@
 {
     // If selected Video exist
     if (self.toBeUploaded.absoluteString.length != 0) {
-        
                  
-            self.progressController = [[ProgressViewController alloc] init];
-             self.progressController.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8f];
-            self.progressController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-            [self presentViewController:self.progressController animated:YES completion:nil];
+        self.progressController = [[ProgressViewController alloc] init];
+        self.progressController.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8f];
+        self.progressController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [self presentViewController:self.progressController animated:YES completion:nil];
         
-//            [self.progressController setProgress:[[NSNumber alloc] initWithDouble:0.0]];
+        NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        NSMutableString *randomString = [NSMutableString stringWithCapacity: 8];
+
+        for (int i=0; i<8; i++) {
+             [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform([letters length])]];
+        }
+        
+        NSTimeInterval  today = [[NSDate date] timeIntervalSince1970];
+        NSInteger time = today;
+        NSString *ts = [NSString stringWithFormat:@"%ld", (long)time];
+        
         NSString *fileName = [self.toBeUploaded lastPathComponent];
-        NSString *finalPath = [[NSString alloc] initWithFormat:@"%@%@", self.uploadOptions.storeOptions.path, fileName];
+        NSString *finalPath = [[NSString alloc] initWithFormat:@"%@%@-%@-%@", self.uploadOptions.storeOptions.path, randomString, ts, fileName];
         self.uploadOptions.storeOptions.path = [[NSString alloc] initWithString:finalPath];
         
         [self.client uploadURLUsing:self.toBeUploaded options:self.uploadOptions queue:dispatch_get_main_queue() uploadProgress:^(NSProgress * _Nonnull progress) {
