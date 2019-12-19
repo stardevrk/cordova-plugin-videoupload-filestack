@@ -46,18 +46,21 @@
 
  #pragma mark - GMImagePickerControllerDelegate
 
- - (void)assetsPickerController:(GMImagePickerController *)picker didFinishUpload:(NSString *)downloadURL
+ - (void)assetsPickerController:(GMImagePickerController *)picker didFinishUpload:(NSMutableDictionary *)result
  {
      [self.viewController dismissViewControllerAnimated:YES completion:nil];
-     NSLog(@"Result Download URL == %@", downloadURL);
-     if (downloadURL.length == 0) {
+     NSString *Status = [result objectForKey:@"Status"] ? [result objectForKey:@"Status"] : [[NSString alloc] init];
+     
+     
+     if (![Status isEqualToString:@"Stored"]) {
          NSLog(@"Upload was failed.");
          [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"cancelled"] callbackId:self.actionCallbackId];
          return;
      }
      
+     
      NSLog(@"Upload completed.");
-     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:downloadURL] callbackId:self.actionCallbackId];
+     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result] callbackId:self.actionCallbackId];
      
  }
 
@@ -69,38 +72,3 @@
  }
 
  @end
-
-// #pragma mark - FSPickerDelegate Methods
-//
-//- (void)fsPicker:(FSPickerController *)picker didFinishPickingMediaWithBlobs:(NSArray<FSBlob *> *)blobs {
-//    NSLog(@"FILES CHOSEN: %@", blobs);
-//    [self.viewController dismissViewControllerAnimated:YES completion:nil];
-//
-//    if (blobs.count == 0) {
-//        NSLog(@"Nothing was picked.");
-//        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"cancelled"] callbackId:self.actionCallbackId];
-//        return;
-//    }
-//
-//    NSMutableArray* files = [[NSMutableArray alloc] init];
-//    for (FSBlob *info in blobs) {
-//        NSMutableDictionary* file = [NSMutableDictionary dictionaryWithCapacity:7];
-//        [file setObject: (!info.container || [info.container isEqual:[NSNull null]] ? [NSNull null]: info.container) forKey:@"container"];
-//        [file setObject: (!info.url || [info.url isEqual:[NSNull null]] ? [NSNull null]: info.url) forKey:@"url"];
-//        [file setObject: (!info.fileName || [info.fileName isEqual:[NSNull null]] ? [NSNull null]: info.fileName) forKey:@"filename"];
-//        [file setObject: (!info.key || [info.key isEqual:[NSNull null]] ? [NSNull null]: info.key) forKey:@"key"];
-//        [file setObject: (!info.mimeType || [info.mimeType isEqual:[NSNull null]] ? [NSNull null]: info.mimeType) forKey:@"mimetype"];
-//        [file setObject: [NSNull null] forKey:@"localPath"];
-//        [file setObject: [NSNumber numberWithInteger:info.size] forKey:@"size"];
-//
-//        [files addObject:file];
-//    }
-//    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:files] callbackId:self.actionCallbackId];
-//}
-//
-// - (void)fsPickerDidCancel:(FSPickerController *)picker {
-//     NSLog(@"FilePicker Cancelled");
-//     [self.viewController dismissViewControllerAnimated:YES completion:nil];
-//     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"cancelled"] callbackId:self.actionCallbackId];
-// }
-//@end

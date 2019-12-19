@@ -209,7 +209,7 @@ static CGSize const kPopoverContentSize = {480, 720};
  *  @param assets An array containing picked PHAssets objects.
  */
 
-- (void)assetsPickerController:(GMImagePickerController *)picker didFinishUpload:(NSString *)downloadURL;
+- (void)assetsPickerController:(GMImagePickerController *)picker didFinishUpload:(NSMutableDictionary *)result;
 
 
 @optional

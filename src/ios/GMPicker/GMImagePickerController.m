@@ -19,7 +19,7 @@
 @property (strong) GMAlbumsViewController *albumsController;
 @property (strong) FSClient *client;
 @property (strong) NSURL *toBeUploaded;
-@property (strong) NSString *resultURL;
+@property (strong) NSMutableDictionary *uploadResult;
 @property (strong) NSString *apiKey;
 @property (strong) NSString *appSecret;
 @property (strong) FSUploadOptions *uploadOptions;
@@ -101,10 +101,9 @@
         
         
         _toBeUploaded = [[NSURL alloc] init];
-        _resultURL = [[NSString alloc] initWithString:@""];
         _uploadPath = [[NSString alloc] initWithString:@""];
         
-        
+        _uploadResult = [NSMutableDictionary dictionary];
         
         
         [self setupNavigationController];
@@ -232,7 +231,18 @@
                              
                              NSLog(@"%@ ------ %@", key, [jsonResponse objectForKey:key]);
                                if ([key isEqualToString:@"url"]) {
-                                   self.resultURL = [[NSString alloc] initWithString:[jsonResponse objectForKey:key]];
+                                   
+                                   [self.uploadResult setObject:[jsonResponse objectForKey:key] forKey:@"URL"];
+                               }
+                               
+                               if ([key isEqualToString:@"key"]) {
+                                   
+                                   [self.uploadResult setObject:[jsonResponse objectForKey:key] forKey:@"Location"];
+                               }
+                               
+                               if ([key isEqualToString:@"status"]) {
+                                   
+                                   [self.uploadResult setObject:[jsonResponse objectForKey:key] forKey:@"Status"];
                                }
                             
                            }
@@ -388,7 +398,7 @@
 - (void)finishPickingAssets:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(assetsPickerController:didFinishUpload:)]) {
-        [self.delegate assetsPickerController:self didFinishUpload:self.resultURL];
+        [self.delegate assetsPickerController:self didFinishUpload:self.uploadResult];
     }
 }
 
