@@ -187,6 +187,8 @@ static CGSize const kPopoverContentSize = {480, 720};
 
 - (void)setupFilestack:(NSString *)key secret:(NSString *)secret region:(NSString *)region bucket:(NSString *)bucket folder:(NSString *)folder;
 
+- (UIImage *)extractImageFromVideoAsset:(PHAsset *)asset;
+
 /**
  *  User finish Actions
  */

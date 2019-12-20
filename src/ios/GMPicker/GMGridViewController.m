@@ -184,6 +184,24 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
     //This is optional. Reload visible thumbnails:
     for (GMGridViewCell *cell in [self.collectionView visibleCells]) {
         NSInteger currentTag = cell.tag;
+
+        //        if (cell.asset.mediaType == PHAssetMediaTypeVideo) {
+        //            PHVideoRequestOptions *option = [PHVideoRequestOptions new];
+        //            [[PHImageManager defaultManager] requestAVAssetForVideo:cell.asset options:option resultHandler:^(AVAsset * _Nullable avasset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        //                AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:avasset];
+        //                gen.appliesPreferredTrackTransform = YES;
+        //                CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+        //                NSError *error = nil;
+        //                CMTime actualTime;
+        //
+        //                CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+        //                UIImage *thumb = [[UIImage alloc] initWithCGImage:image];
+        //                CGImageRelease(image);
+        //                [gen release];
+        //            }];
+        //
+        //        }
+        
         [self.imageManager requestImageForAsset:cell.asset
                                      targetSize:AssetGridThumbnailSize
                                     contentMode:PHImageContentModeAspectFill
@@ -334,6 +352,23 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
     else*/
     {
         //NSLog(@"Image manager: Requesting FILL image for iPhone");
+
+        //        if (cell.asset.mediaType == PHAssetMediaTypeVideo) {
+        //            PHVideoRequestOptions *option = [PHVideoRequestOptions new];
+        //            [[PHImageManager defaultManager] requestAVAssetForVideo:cell.asset options:option resultHandler:^(AVAsset * _Nullable avasset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        //                AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:avasset];
+        //                gen.appliesPreferredTrackTransform = YES;
+        //                CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+        //                NSError *error = nil;
+        //                CMTime actualTime;
+        //
+        //                CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+        //                UIImage *thumb = [[UIImage alloc] initWithCGImage:image];
+        //                CGImageRelease(image);
+        //                [gen release];
+        //            }];
+        //
+        //        }
         [self.imageManager requestImageForAsset:asset
                                      targetSize:AssetGridThumbnailSize
                                     contentMode:PHImageContentModeAspectFill

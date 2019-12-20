@@ -199,8 +199,10 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
         }
     }
     
-    self.collectionsFetchResultsAssets= @[allFetchResultArray,userFetchResultArray,smartFetchResultArray];
-    self.collectionsFetchResultsTitles= @[allFetchResultLabel,userFetchResultLabel,smartFetchResultLabel];
+    // self.collectionsFetchResultsAssets= @[allFetchResultArray,userFetchResultArray,smartFetchResultArray];
+    // self.collectionsFetchResultsTitles= @[allFetchResultLabel,userFetchResultLabel,smartFetchResultLabel];
+    self.collectionsFetchResultsAssets= @[smartFetchResultArray];
+    self.collectionsFetchResultsTitles= @[smartFetchResultLabel];
 }
 
 

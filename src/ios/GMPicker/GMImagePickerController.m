@@ -59,21 +59,22 @@
         _minimumInteritemSpacing = 2.0;
         
         // Sample of how to select the collections you want to display:
-        _customSmartCollections = @[@(PHAssetCollectionSubtypeSmartAlbumFavorites),
-                                    @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
-                                    @(PHAssetCollectionSubtypeSmartAlbumVideos),
-                                    @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
-                                    @(PHAssetCollectionSubtypeSmartAlbumTimelapses),
-                                    @(PHAssetCollectionSubtypeSmartAlbumBursts),
-                                    @(PHAssetCollectionSubtypeSmartAlbumPanoramas)];
+        // _customSmartCollections = @[@(PHAssetCollectionSubtypeSmartAlbumFavorites),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumVideos),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumTimelapses),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumBursts),
+        //                             @(PHAssetCollectionSubtypeSmartAlbumPanoramas)];
+        _customSmartCollections = @[@(PHAssetCollectionSubtypeSmartAlbumVideos)];
         // If you don't want to show smart collections, just put _customSmartCollections to nil;
         //_customSmartCollections=nil;
         
         // Which media types will display
-//        _mediaTypes = @[@(PHAssetMediaTypeAudio),
-//                        @(PHAssetMediaTypeVideo),
-//                        @(PHAssetMediaTypeImage)];
-        _mediaTypes = @[@(PHAssetMediaTypeVideo)];
+       _mediaTypes = @[@(PHAssetMediaTypeAudio),
+                       @(PHAssetMediaTypeVideo),
+                       @(PHAssetMediaTypeImage)];
+        // _mediaTypes = @[@(PHAssetMediaTypeVideo)];
         
         self.preferredContentSize = kPopoverContentSize;
         
@@ -140,6 +141,38 @@
         self.uploadOptions.storeOptions.container = [[NSString alloc] initWithString:bucket];
         self.uploadOptions.storeOptions.region = [[NSString alloc] initWithString:region];
     }
+}
+
+- (UIImage *)extractImageFromVideoAsset:(PHAsset *)asset
+{
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    PHVideoRequestOptions *option = [PHVideoRequestOptions new];
+    __block AVAsset *resultAsset;
+
+    [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
+        resultAsset = avasset;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    // Calculate a time for the snapshot - I'm using the half way mark.
+    CMTime duration = [resultAsset duration];
+    CMTime snapshot = CMTimeMake(duration.value / 2, duration.timescale);
+
+    // Create a generator and copy image at the time.
+    // I'm not capturing the actual time or an error.
+    AVAssetImageGenerator *generator =
+        [AVAssetImageGenerator assetImageGeneratorWithAsset:resultAsset];
+    CGImageRef imageRef = [generator copyCGImageAtTime:snapshot
+                                            actualTime:nil
+                                                 error:nil];
+
+    // Make a UIImage and release the CGImage.
+    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    return thumbnail;
 }
 
 - (void)viewWillAppear:(BOOL)animated
